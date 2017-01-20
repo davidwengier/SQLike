@@ -35,7 +35,7 @@ namespace StarNet.StarQL
 				{
 					tokens.Add(GetWhitespaceToken(reader, currentChar));
 				}
-				else if (char.IsDigit(currentChar))
+				else if (char.IsDigit(currentChar) || currentChar == '-')
 				{
 					tokens.Add(GetNumericOrDateLiteral(reader, currentChar));
 				}
@@ -55,7 +55,7 @@ namespace StarNet.StarQL
 						Start = reader.Position,
 						End = reader.Position + 1,
 						Value = reader.Read().ToString(),
-						Message = "Unknown character"
+						Message = "Unknown identifier"
 					});
 				}
 			}
@@ -82,7 +82,7 @@ namespace StarNet.StarQL
 			bool seenASlash = false;
 			int potentialLastSpot = 0;
 			StringBuilder sb = new StringBuilder();
-			while (true)
+			while (!reader.AtEnd)
 			{
 				char c = reader.Read();
 				if (c == '/')
@@ -95,8 +95,12 @@ namespace StarNet.StarQL
 					else
 					{
 						seenASlash = true;
-						potentialLastSpot = reader.Position - start;
+						potentialLastSpot = reader.Position - start - 1;
 					}
+				}
+				else if (c == '-' && reader.Position - start == 0)
+				{
+					sb.Append(c);
 				}
 				else if (!char.IsDigit(c) && c != '.')
 				{
@@ -155,7 +159,7 @@ namespace StarNet.StarQL
 						Start = start,
 						End = reader.Position,
 						Value = value,
-						Message = "Found dot (.) in identifier but could not parse as a decimal"
+						Message = "Found dot in identifier but could not parse as a decimal"
 					};
 				}
 			}
