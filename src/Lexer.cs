@@ -98,12 +98,13 @@ namespace StarNet.StarQL
 						potentialLastSpot = reader.Position - start - 1;
 					}
 				}
-				else if (c == '-' && reader.Position - start == 0)
+				else if (c == '-' && reader.Position - start - 1 == 0)
 				{
 					sb.Append(c);
 				}
 				else if (!char.IsDigit(c) && c != '.')
 				{
+					reader.BackOne();
 					break;
 				}
 				else
