@@ -8,5 +8,9 @@ namespace StarNet.StarQL.Tokens
 	/// </summary>
 	public class NumericLiteral : Token
 	{
+		/// <summary>
+		/// Gets or sets the value.
+		/// </summary>
+		public object Value { get; set; }
 	}
 }

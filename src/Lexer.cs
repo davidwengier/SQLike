@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using StarNet.StarQL.Tokens;
 
 namespace StarNet.StarQL
@@ -47,6 +48,16 @@ namespace StarNet.StarQL
 					tokens.Add(CreateToken<Comma>(reader));
 					reader.Read();
 				}
+				else
+				{
+					tokens.Add(new Error()
+					{
+						Start = reader.Position,
+						End = reader.Position + 1,
+						Value = reader.Read().ToString(),
+						Message = "Unknown character"
+					});
+				}
 			}
 
 			return tokens;
@@ -64,7 +75,113 @@ namespace StarNet.StarQL
 
 		private Token GetNumericOrDateLiteral(StringReader reader, char currentChar)
 		{
-			throw new NotImplementedException();
+			int start = reader.Position;
+			int position = start;
+
+			bool isDate = false;
+			bool seenASlash = false;
+			int potentialLastSpot = 0;
+			StringBuilder sb = new StringBuilder();
+			while (true)
+			{
+				char c = reader.Read();
+				if (c == '/')
+				{
+					sb.Append(c);
+					if (seenASlash)
+					{
+						isDate = true;
+					}
+					else
+					{
+						seenASlash = true;
+						potentialLastSpot = reader.Position - start;
+					}
+				}
+				else if (!char.IsDigit(c) && c != '.')
+				{
+					break;
+				}
+				else
+				{
+					sb.Append(c);
+				}
+			}
+			string value = sb.ToString();
+			if (isDate)
+			{
+				DateTime dateValue;
+				if (DateTime.TryParse(value, out dateValue))
+				{
+					return new DateLiteral()
+					{
+						Start = start,
+						End = reader.Position,
+						Value = dateValue
+					};
+				}
+				else
+				{
+					return new Error()
+					{
+						Start = start,
+						End = reader.Position,
+						Value = value,
+						Message = "Could not parse value as a date"
+					};
+				}
+			}
+			else if (potentialLastSpot > 0)
+			{
+				reader.Position = potentialLastSpot;
+				value = value.Substring(0, potentialLastSpot);
+			}
+			if (value.IndexOf('.') > -1)
+			{
+				decimal decValue;
+				if (decimal.TryParse(value, out decValue))
+				{
+					return new NumericLiteral()
+					{
+						Start = start,
+						End = reader.Position,
+						Value = decValue
+					};
+				}
+				else
+				{
+					return new Error()
+					{
+						Start = start,
+						End = reader.Position,
+						Value = value,
+						Message = "Found dot (.) in identifier but could not parse as a decimal"
+					};
+				}
+			}
+			else
+			{
+				int intValue;
+				if (int.TryParse(value, out intValue))
+				{
+					return new NumericLiteral()
+					{
+						Start = start,
+						End = reader.Position,
+						Value = intValue
+					};
+				}
+				else
+				{
+					return new Error()
+					{
+						Start = start,
+						End = reader.Position,
+						Value = value,
+						Message = "Could not parse as a integer"
+					};
+				}
+			}
 		}
 
 		private static Whitespace GetWhitespaceToken(StringReader reader, char currentChar)

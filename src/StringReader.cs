@@ -35,6 +35,10 @@ namespace StarNet.StarQL
 			{
 				return m_position;
 			}
+			set
+			{
+				m_position = value;
+			}
 		}
 
 		internal StringReader(string query)

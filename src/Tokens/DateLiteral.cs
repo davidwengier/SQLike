@@ -8,5 +8,9 @@ namespace StarNet.StarQL.Tokens
 	/// </summary>
 	public class DateLiteral : Token
 	{
+		/// <summary>
+		/// Gets or sets the value.
+		/// </summary>
+		public DateTime Value { get; set; }
 	}
 }
