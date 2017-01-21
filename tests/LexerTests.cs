@@ -89,11 +89,11 @@ namespace StarNet.StarQL.Tests
 
 		[Theory]
 		[InlineData("1.2", 1.2, 3)]
-		[InlineData("-1.2", -1.2, 2)]
-		[InlineData("1.2/3", 1.2, 1)]
-		[InlineData("1.2 / 3", 1.2, 1)]
-		[InlineData("1.2 / 3.1", 1.2, 1)]
-		[InlineData("1.2 / 3.1", 1.2, 1)]
+		[InlineData("-1.2", -1.2, 4)]
+		[InlineData("1.2/3", 1.2, 3)]
+		[InlineData("1.2 / 3", 1.2, 3)]
+		[InlineData("1.2 / 3.1", 1.2, 3)]
+		[InlineData("1.2 / 3.1", 1.2, 3)]
 		public void Decimals(string input, decimal result, int length)
 		{
 			List<Token> tokens = Lexer.Lex(input);
@@ -107,8 +107,16 @@ namespace StarNet.StarQL.Tests
 
 		[Theory]
 		[InlineData("1/3/2017", 2017, 3, 1, 8)]
+		[InlineData("31/12/2017", 2017, 12, 31, 10)]
 		public void DateLiteral(string input, int year, int month, int day, int length)
 		{
+			List<Token> tokens = Lexer.Lex(input);
+
+			Assert.NotNull(tokens);
+			var token = Assert.IsType<DateLiteral>(tokens[0]);
+			Assert.Equal(0, token.Start);
+			Assert.Equal(length, token.End);
+			Assert.Equal(new DateTime(year, month, day), token.Value);
 		}
 	}
 }
