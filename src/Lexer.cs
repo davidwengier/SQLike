@@ -9,21 +9,12 @@ namespace StarNet.StarQL
 	/// <summary>
 	/// Converts strings to tokens
 	/// </summary>
-	public class Lexer
+	public static class Lexer
 	{
 		/// <summary>
 		/// Lexes the specified query.
 		/// </summary>
 		public static List<Token> Lex(string query)
-		{
-			Lexer lexer = new Lexer();
-			return lexer.Tokenize(query);
-		}
-
-		/// <summary>
-		/// Tokenizes the specified query.
-		/// </summary>
-		public List<Token> Tokenize(string query)
 		{
 			List<Token> tokens = new List<Token>();
 			StringReader reader = new StringReader(query);
@@ -37,7 +28,7 @@ namespace StarNet.StarQL
 				}
 				else if (char.IsDigit(currentChar) || currentChar == '-')
 				{
-					tokens.Add(GetNumericOrDateLiteral(reader, currentChar));
+					tokens.Add(GetNumericOrDateLiteral(reader));
 				}
 				else if (currentChar == '"' || currentChar == '\'')
 				{
@@ -67,7 +58,7 @@ namespace StarNet.StarQL
 			return tokens;
 		}
 
-		private Token GetIdentifierToken(StringReader reader, char currentChar)
+		private static Token GetIdentifierToken(StringReader reader, char currentChar)
 		{
 			Identifier token = CreateToken<Identifier>(reader);
 			if (currentChar == '[')
@@ -83,7 +74,7 @@ namespace StarNet.StarQL
 			return token;
 		}
 
-		private Token GetStringToken(StringReader reader, char currentChar)
+		private static Token GetStringToken(StringReader reader, char currentChar)
 		{
 			StringLiteral token = CreateToken<StringLiteral>(reader);
 			token.Delimeter = currentChar;
@@ -93,10 +84,9 @@ namespace StarNet.StarQL
 			return token;
 		}
 
-		private Token GetNumericOrDateLiteral(StringReader reader, char currentChar)
+		private static Token GetNumericOrDateLiteral(StringReader reader)
 		{
 			int start = reader.Position;
-			int position = start;
 
 			bool isDate = false;
 			bool seenASlash = false;
