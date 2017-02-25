@@ -118,5 +118,20 @@ namespace StarNet.StarQL.Tests
 			Assert.Equal(length, token.End);
 			Assert.Equal(new DateTime(year, month, day), token.Value);
 		}
+
+		[Theory]
+		[InlineData("[hi there]", true, "hi there", 10)]
+		[InlineData("[hi]", true, "hi", 4)]
+		public void Indentifier(string input, bool qualified, string value, int length)
+		{
+			List<Token> tokens = Lexer.Lex(input);
+
+			Assert.NotNull(tokens);
+			var token = Assert.IsType<Identifier>(tokens[0]);
+			Assert.Equal(0, token.Start);
+			Assert.Equal(length, token.End);
+			Assert.Equal(qualified, token.Qualified);
+			Assert.Equal(value, token.Value);
+		}
 	}
 }

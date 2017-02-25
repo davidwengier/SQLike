@@ -48,6 +48,10 @@ namespace StarNet.StarQL
 					tokens.Add(CreateToken<Comma>(reader));
 					reader.Read();
 				}
+				else if (currentChar.Equals('['))
+				{
+					tokens.Add(GetIdentifierToken(reader, currentChar));
+				}
 				else
 				{
 					tokens.Add(new Error()
@@ -61,6 +65,22 @@ namespace StarNet.StarQL
 			}
 
 			return tokens;
+		}
+
+		private Token GetIdentifierToken(StringReader reader, char currentChar)
+		{
+			Identifier token = CreateToken<Identifier>(reader);
+			if (currentChar == '[')
+			{
+				token.Qualified = true;
+				token.Value = reader.ReadUntilMatching("[", "]");
+			}
+			else
+			{
+				token.Value = reader.ReadUntil(c => char.IsWhiteSpace(c) || c == '.' || c == ',');
+			}
+			token.End = reader.Position;
+			return token;
 		}
 
 		private Token GetStringToken(StringReader reader, char currentChar)
