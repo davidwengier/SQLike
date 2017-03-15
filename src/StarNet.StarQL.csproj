@@ -138,7 +138,9 @@
     <Compile Include="Tokens\Comma.cs" />
     <Compile Include="Tokens\DateLiteral.cs" />
     <Compile Include="Tokens\Error.cs" />
+    <Compile Include="Tokens\Keyword.cs" />
     <Compile Include="Tokens\Identifier.cs" />
+    <Compile Include="Tokens\KeywordKind.cs" />
     <Compile Include="Tokens\NumericLiteral.cs" />
     <Compile Include="Tokens\StringLiteral.cs" />
     <Compile Include="Tokens\Token.cs" />

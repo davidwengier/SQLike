@@ -21,7 +21,7 @@ namespace StarNet.StarQL.Tests
 
 			Assert.NotNull(tokens);
 			Assert.Equal(1, tokens.Count);
-			var token = Assert.IsType<Whitespace>(tokens[0]);
+			Whitespace token = Assert.IsType<Whitespace>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(3, token.End);
 		}
@@ -38,7 +38,7 @@ namespace StarNet.StarQL.Tests
 
 			Assert.NotNull(tokens);
 			Assert.Equal(2, tokens.Count);
-			var token = Assert.IsType<Whitespace>(tokens[0]);
+			Whitespace token = Assert.IsType<Whitespace>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(3, token.End);
 
@@ -62,7 +62,7 @@ namespace StarNet.StarQL.Tests
 			List<Token> tokens = Lexer.Lex(input);
 			Assert.NotNull(tokens);
 			Assert.Equal(1, tokens.Count);
-			var token = Assert.IsType<StringLiteral>(tokens[0]);
+			StringLiteral token = Assert.IsType<StringLiteral>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(middle.Length + 1, token.End);
 			Assert.Equal(delim, token.Delimeter);
@@ -81,7 +81,7 @@ namespace StarNet.StarQL.Tests
 			List<Token> tokens = Lexer.Lex(input);
 
 			Assert.NotNull(tokens);
-			var token = Assert.IsType<NumericLiteral>(tokens[0]);
+			NumericLiteral token = Assert.IsType<NumericLiteral>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(length, token.End);
 			Assert.Equal(result, token.Value);
@@ -99,7 +99,7 @@ namespace StarNet.StarQL.Tests
 			List<Token> tokens = Lexer.Lex(input);
 
 			Assert.NotNull(tokens);
-			var token = Assert.IsType<NumericLiteral>(tokens[0]);
+			NumericLiteral token = Assert.IsType<NumericLiteral>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(length, token.End);
 			Assert.Equal(result, token.Value);
@@ -113,7 +113,7 @@ namespace StarNet.StarQL.Tests
 			List<Token> tokens = Lexer.Lex(input);
 
 			Assert.NotNull(tokens);
-			var token = Assert.IsType<DateLiteral>(tokens[0]);
+			DateLiteral token = Assert.IsType<DateLiteral>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(length, token.End);
 			Assert.Equal(new DateTime(year, month, day), token.Value);
@@ -127,11 +127,33 @@ namespace StarNet.StarQL.Tests
 			List<Token> tokens = Lexer.Lex(input);
 
 			Assert.NotNull(tokens);
-			var token = Assert.IsType<Identifier>(tokens[0]);
+			Identifier token = Assert.IsType<Identifier>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(length, token.End);
 			Assert.Equal(qualified, token.Qualified);
 			Assert.Equal(value, token.Value);
+		}
+
+		[Theory]
+		[MemberData("GetKeywords")]
+		public void Keyword(object input)
+		{
+			Random rand = new Random();
+			string keyword = new string(input.ToString().Select(c => rand.Next(0, 2) == 1 ? char.ToUpper(c) : char.ToLower(c)).ToArray());
+			KeywordKind kind = (KeywordKind)input;
+
+			List<Token> tokens = Lexer.Lex(keyword);
+
+			Assert.NotNull(tokens);
+			Keyword token = Assert.IsType<Keyword>(tokens[0]);
+			Assert.Equal(0, token.Start);
+			Assert.Equal(keyword.Length, token.End);
+			Assert.Equal(keyword, token.Value);
+		}
+
+		public static IEnumerable<object[]> GetKeywords()
+		{
+			return Enum.GetValues(typeof(KeywordKind)).Cast<object>().Select(c => new object[] { c });
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,17 +46,43 @@ namespace StarNet.StarQL
 				}
 				else
 				{
-					tokens.Add(new Error()
+					Token token = TryLexKeyword(reader);
+					if (token != null)
 					{
-						Start = reader.Position,
-						End = reader.Position + 1,
-						Value = reader.Read().ToString(),
-						Message = "Unknown identifier"
-					});
+						tokens.Add(token);
+					}
+					else
+					{
+						tokens.Add(new Error()
+						{
+							Start = reader.Position,
+							End = reader.Position + 1,
+							Value = reader.Read().ToString(),
+							Message = "Unknown identifier"
+						});
+					}
 				}
 			}
 
 			return tokens;
+		}
+
+		private static Token TryLexKeyword(StringReader reader)
+		{
+			foreach (KeywordKind kind in Enum.GetValues(typeof(KeywordKind)))
+			{
+				if (reader.PeekWord().Equals(kind.ToString(), StringComparison.OrdinalIgnoreCase))
+				{
+					return new Keyword
+					{
+						Start = reader.Position,
+						Value = reader.ReadUntil(char.IsWhiteSpace),
+						End = reader.Position,
+						Kind = kind
+					};
+				}
+			}
+			return null;
 		}
 
 		private static Token GetIdentifierToken(StringReader reader, char currentChar)
@@ -125,8 +152,7 @@ namespace StarNet.StarQL
 			string value = sb.ToString();
 			if (isDate)
 			{
-				DateTime dateValue;
-				if (DateTime.TryParse(value, out dateValue))
+				if (DateTime.TryParse(value, out DateTime dateValue))
 				{
 					return new DateLiteral()
 					{
@@ -153,8 +179,7 @@ namespace StarNet.StarQL
 			}
 			if (value.IndexOf('.') > -1)
 			{
-				decimal decValue;
-				if (decimal.TryParse(value, out decValue))
+				if (decimal.TryParse(value, out decimal decValue))
 				{
 					return new NumericLiteral()
 					{
@@ -176,8 +201,7 @@ namespace StarNet.StarQL
 			}
 			else
 			{
-				int intValue;
-				if (int.TryParse(value, out intValue))
+				if (int.TryParse(value, out int intValue))
 				{
 					return new NumericLiteral()
 					{
