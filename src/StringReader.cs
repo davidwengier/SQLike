@@ -18,7 +18,7 @@ namespace StarNet.StarQL
 		{
 			get
 			{
-				if (AtEnd)
+				if (this.AtEnd)
 				{
 					return "At End";
 				}
@@ -112,30 +112,12 @@ namespace StarNet.StarQL
 			return sb.ToString();
 		}
 
-		internal void SkipWhitespace()
-		{
-			while (char.IsWhiteSpace(Peek()))
-			{
-				Read();
-			}
-		}
-
 		internal bool AtEnd
 		{
 			get
 			{
 				return m_position >= m_length;
 			}
-		}
-
-		internal bool SkipIf(char character)
-		{
-			if (Peek() == character)
-			{
-				Read();
-				return true;
-			}
-			return false;
 		}
 
 		internal string ReadUntil(Func<char, bool> predicate)
@@ -157,11 +139,6 @@ namespace StarNet.StarQL
 		internal string ReadUntilNot(string terminator)
 		{
 			return ReadUntil(terminator, true);
-		}
-
-		internal string ReadUntil(string terminator)
-		{
-			return ReadUntil(terminator, false);
 		}
 
 		internal string ReadUntil(string terminator, bool not)
@@ -273,18 +250,6 @@ namespace StarNet.StarQL
 			}
 
 			return sb.ToString();
-		}
-
-		internal string ReadToEnd()
-		{
-			string result = m_query.Substring(m_position);
-			m_position = m_length;
-			return result;
-		}
-
-		internal void Skip(int count)
-		{
-			m_position += count;
 		}
 	}
 }

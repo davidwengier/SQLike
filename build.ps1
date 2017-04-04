@@ -57,7 +57,14 @@ Write-Host "Got version info:"
 $vers
 
 ## Get vars
-$MSBuildPath = "C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"
+$RegistryInfo = $(Get-ChildItem -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\MSBuild\ToolsVersions\" | 
+    Where { $_.Name -match '\\\d+.\d+$' } | 
+    Sort-Object -property  @{Expression={[System.Convert]::ToDecimal($_.Name.Substring($_.Name.LastIndexOf("\") + 1).Replace(".",$_decSep).Replace(",",$_decSep))}} -Descending |
+    Select-Object -First 1)
+$MSBuildToolsVersion = $RegistryInfo.PSChildName
+$MSBuildPath = $RegistryInfo.GetValue("MSBuildToolsPath")
+$MSBuildPath = "$MSBuildPath\msbuild.exe"
+Write-Host "Using msbuild in $MSBuildPath"
 $SolutionName = (Get-ChildItem -Path $PSScriptRoot -Filter "*.sln" | Select-Object -First 1).BaseName
 $Version = $vers.SimpleVersion.ToString()
 $MajorMinorVersion = $vers.MajorMinorVersion.ToString()
@@ -67,8 +74,9 @@ Write-Host "Building $SolutionName"
 Write-Host "Running nuget restore"
 Invoke-Expression "&`"$NugetPath`" restore $SolutionName.sln  -Source $NugetServer/nuget -Source https://api.nuget.org/v3/index.json"
 
-Write-Host "Running msbuild"
-Invoke-Expression "&`"$MSBuildPath`" $SolutionName.sln /p:Optimize=true /p:Configuration=Release /p:DebugSymbols=true /p:DebugType=full"
+$MSBuildArguments = "$SolutionName.sln /p:Optimize=true /p:Configuration=Release /p:DebugSymbols=true /p:DebugType=full /tv:$MSBuildToolsVersion"
+Write-Host "Running msbuild: $MSBuildArguments"
+Invoke-Expression "&`"$MSBuildPath`" $MSBuildArguments"
 
 if (-not (Test-Path $XUnitExe)) {
 	Write-Host "Could not find XUnit executable at $XunitExe"
