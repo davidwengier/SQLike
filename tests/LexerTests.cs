@@ -8,6 +8,21 @@ namespace StarNet.StarQL.Tests
 {
 	public class LexerTests
 	{
+		[Fact]
+		public void Lex_Null_Throws_Exception()
+		{
+			Assert.Throws<ArgumentNullException>(() => Lexer.Lex(null));
+		}
+
+		[Fact]
+		public void Lex_BlankString_Returns_EmptyList()
+		{
+			List<Token> tokens = Lexer.Lex("");
+
+			Assert.NotNull(tokens);
+			Assert.Equal(0, tokens.Count);
+		}
+
 		[Theory]
 		[InlineData(' ')]
 		[InlineData('\t')]
@@ -45,6 +60,20 @@ namespace StarNet.StarQL.Tests
 			token = Assert.IsType<Whitespace>(tokens[1]);
 			Assert.Equal(4, token.Start);
 			Assert.Equal(7, token.End);
+		}
+
+		[Theory]
+		[InlineData(",", typeof(Comma))]
+		[InlineData(".", typeof(Period))]
+		public void Comma(string c, Type tokenType)
+		{
+			List<Token> tokens = Lexer.Lex(c);
+
+			Assert.NotNull(tokens);
+			Assert.Equal(1, tokens.Count);
+			Assert.IsType(tokenType, tokens[0]);
+			Assert.Equal(0, tokens[0].Start);
+			Assert.Equal(1, tokens[0].End);
 		}
 
 		[Theory]
@@ -91,9 +120,11 @@ namespace StarNet.StarQL.Tests
 		[InlineData("1.2", 1.2, 3)]
 		[InlineData("-1.2", -1.2, 4)]
 		[InlineData("1.2/3", 1.2, 3)]
-		[InlineData("1.2 / 3", 1.2, 3)]
+		[InlineData("-1.2/3", -1.2, 4)]
 		[InlineData("1.2 / 3.1", 1.2, 3)]
-		[InlineData("1.2 / 3.1", 1.2, 3)]
+		[InlineData("-1.2 / 3.1", -1.2, 4)]
+		[InlineData("1.2 - 3.1", 1.2, 3)]
+		[InlineData("-1.2 - 3.1", -1.2, 4)]
 		public void Decimals(string input, decimal result, int length)
 		{
 			List<Token> tokens = Lexer.Lex(input);
@@ -106,7 +137,9 @@ namespace StarNet.StarQL.Tests
 		}
 
 		[Theory]
+		[InlineData("1-3-2017", 2017, 3, 1, 8)]
 		[InlineData("1/3/2017", 2017, 3, 1, 8)]
+		[InlineData("31-12-2017", 2017, 12, 31, 10)]
 		[InlineData("31/12/2017", 2017, 12, 31, 10)]
 		public void DateLiteral(string input, int year, int month, int day, int length)
 		{
@@ -120,8 +153,22 @@ namespace StarNet.StarQL.Tests
 		}
 
 		[Theory]
+		[InlineData("15/15/2017")]
+		[InlineData("1..2")]
+		public void Bad_Input_Return_Error(string input)
+		{
+			List<Token> tokens = Lexer.Lex(input);
+			Error token = Assert.IsType<Error>(tokens[0]);
+			Assert.Equal(0, token.Start);
+			Assert.Equal(input.Length, token.End);
+			Assert.Equal(input, token.Value);
+		}
+
+		[Theory]
 		[InlineData("[hi there]", true, "hi there", 10)]
 		[InlineData("[hi]", true, "hi", 4)]
+		[InlineData("hi", false, "hi", 2)]
+		[InlineData("hi there", false, "hi", 2)]
 		public void Indentifier(string input, bool qualified, string value, int length)
 		{
 			List<Token> tokens = Lexer.Lex(input);

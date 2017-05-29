@@ -135,6 +135,7 @@
     <Compile Include="Lexer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringReader.cs" />
+    <Compile Include="Tokens\Period.cs" />
     <Compile Include="Tokens\Comma.cs" />
     <Compile Include="Tokens\DateLiteral.cs" />
     <Compile Include="Tokens\Error.cs" />

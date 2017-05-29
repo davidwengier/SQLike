@@ -17,6 +17,9 @@ namespace StarNet.StarQL
 		/// </summary>
 		public static List<Token> Lex(string query)
 		{
+			if (query == null) throw new ArgumentNullException(nameof(query));
+			if (query.Length == 0) return new List<Token>();
+
 			List<Token> tokens = new List<Token>();
 			StringReader reader = new StringReader(query);
 
@@ -40,6 +43,11 @@ namespace StarNet.StarQL
 					tokens.Add(CreateToken<Comma>(reader));
 					reader.Read();
 				}
+				else if (currentChar == '.')
+				{
+					tokens.Add(CreateToken<Period>(reader));
+					reader.Read();
+				}
 				else if (currentChar.Equals('['))
 				{
 					tokens.Add(GetIdentifierToken(reader, currentChar));
@@ -53,13 +61,7 @@ namespace StarNet.StarQL
 					}
 					else
 					{
-						tokens.Add(new Error()
-						{
-							Start = reader.Position,
-							End = reader.Position + 1,
-							Value = reader.Read().ToString(),
-							Message = "Unknown identifier"
-						});
+						tokens.Add(GetIdentifierToken(reader, currentChar));
 					}
 				}
 			}
@@ -117,6 +119,7 @@ namespace StarNet.StarQL
 
 			bool isDate = false;
 			bool seenASlash = false;
+			bool seenAMinus = false;
 			int potentialLastSpot = 0;
 			StringBuilder sb = new StringBuilder();
 			while (!reader.AtEnd)
@@ -138,6 +141,19 @@ namespace StarNet.StarQL
 				else if (c == '-' && reader.Position - start - 1 == 0)
 				{
 					sb.Append(c);
+				}
+				else if (c == '-')
+				{
+					sb.Append(c);
+					if (seenAMinus)
+					{
+						isDate = true;
+					}
+					else
+					{
+						seenAMinus = true;
+						potentialLastSpot = reader.Position - start - 1;
+					}
 				}
 				else if (!char.IsDigit(c) && c != '.')
 				{
@@ -238,7 +254,7 @@ namespace StarNet.StarQL
 			{
 				Start = reader.Position,
 				// Assume a single char token
-				End = reader.Position
+				End = reader.Position + 1
 			};
 			return token;
 		}
