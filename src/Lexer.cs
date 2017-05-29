@@ -107,8 +107,19 @@ namespace StarNet.StarQL
 		{
 			StringLiteral token = CreateToken<StringLiteral>(reader);
 			token.Delimeter = currentChar;
-			token.Value = reader.ReadUntilMatching(currentChar.ToString(), currentChar.ToString());
-			token.Value = token.Value.Substring(0, token.Value.Length - 1);
+			string currentCharAsString = currentChar.ToString();
+			string value = reader.ReadUntilMatching(currentCharAsString, currentCharAsString);
+			if (reader.AtEnd && (value.Length == 0 || value[value.Length - 1] != currentChar))
+			{
+				return new Error()
+				{
+					Start = token.Start,
+					Value = currentCharAsString + value,
+					End = reader.Position,
+					Message = "Unterminated string literal - Could not find matching " + currentCharAsString
+				};
+			}
+			token.Value = value.Substring(0, value.Length - 1);
 			token.End = reader.Position - 1;
 			return token;
 		}

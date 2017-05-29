@@ -155,6 +155,11 @@ namespace StarNet.StarQL.Tests
 		[Theory]
 		[InlineData("15/15/2017")]
 		[InlineData("1..2")]
+		[InlineData("'")]
+		[InlineData("'hi there")]
+		[InlineData("\"")]
+		[InlineData("\"hi there")]
+		[InlineData("-")] // this should eventually be an arithmetic operator token
 		public void Bad_Input_Return_Error(string input)
 		{
 			List<Token> tokens = Lexer.Lex(input);
