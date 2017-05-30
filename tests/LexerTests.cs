@@ -6,7 +6,7 @@ using Xunit;
 
 namespace StarNet.StarQL.Tests
 {
-	public class LexerTests
+	public partial class LexerTests
 	{
 		[Fact]
 		public void Lex_Null_Throws_Exception()
@@ -39,6 +39,8 @@ namespace StarNet.StarQL.Tests
 			Whitespace token = Assert.IsType<Whitespace>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(3, token.End);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
@@ -60,20 +62,24 @@ namespace StarNet.StarQL.Tests
 			token = Assert.IsType<Whitespace>(tokens[1]);
 			Assert.Equal(4, token.Start);
 			Assert.Equal(7, token.End);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
 		[InlineData(",", typeof(Comma))]
 		[InlineData(".", typeof(Period))]
-		public void Comma(string c, Type tokenType)
+		public void SingleCharacterTokens(string input, Type tokenType)
 		{
-			List<Token> tokens = Lexer.Lex(c);
+			List<Token> tokens = Lexer.Lex(input);
 
 			Assert.NotNull(tokens);
 			Assert.Equal(1, tokens.Count);
 			Assert.IsType(tokenType, tokens[0]);
 			Assert.Equal(0, tokens[0].Start);
 			Assert.Equal(1, tokens[0].End);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
@@ -96,10 +102,13 @@ namespace StarNet.StarQL.Tests
 			Assert.Equal(middle.Length + 1, token.End);
 			Assert.Equal(delim, token.Delimeter);
 			Assert.Equal(middle, token.Value);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
 		[InlineData("1", 1, 1)]
+		[InlineData("01", 1, 2)]
 		[InlineData("-1", -1, 2)]
 		[InlineData("1/3", 1, 1)]
 		[InlineData("1 / 3", 1, 1)]
@@ -113,10 +122,14 @@ namespace StarNet.StarQL.Tests
 			NumericLiteral token = Assert.IsType<NumericLiteral>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(length, token.End);
-			Assert.Equal(result, token.Value);
+			Assert.Equal(result, token.Number);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
+		[InlineData("01.2", 1.2, 4)]
+		[InlineData("1.20", 1.2, 4)]
 		[InlineData("1.2", 1.2, 3)]
 		[InlineData("-1.2", -1.2, 4)]
 		[InlineData("1.2/3", 1.2, 3)]
@@ -133,7 +146,9 @@ namespace StarNet.StarQL.Tests
 			NumericLiteral token = Assert.IsType<NumericLiteral>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(length, token.End);
-			Assert.Equal(result, token.Value);
+			Assert.Equal(result, token.Number);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
@@ -149,11 +164,14 @@ namespace StarNet.StarQL.Tests
 			DateLiteral token = Assert.IsType<DateLiteral>(tokens[0]);
 			Assert.Equal(0, token.Start);
 			Assert.Equal(length, token.End);
-			Assert.Equal(new DateTime(year, month, day), token.Value);
+			Assert.Equal(new DateTime(year, month, day), token.DateTime);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
 		[InlineData("15/15/2017")]
+		[InlineData("15-15-2017")]
 		[InlineData("1..2")]
 		[InlineData("'")]
 		[InlineData("'hi there")]
@@ -167,6 +185,8 @@ namespace StarNet.StarQL.Tests
 			Assert.Equal(0, token.Start);
 			Assert.Equal(input.Length, token.End);
 			Assert.Equal(input, token.Value);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
@@ -184,6 +204,8 @@ namespace StarNet.StarQL.Tests
 			Assert.Equal(length, token.End);
 			Assert.Equal(qualified, token.Qualified);
 			Assert.Equal(value, token.Value);
+
+			Assert.Equal(input, string.Join("", tokens));
 		}
 
 		[Theory]
@@ -201,6 +223,8 @@ namespace StarNet.StarQL.Tests
 			Assert.Equal(0, token.Start);
 			Assert.Equal(keyword.Length, token.End);
 			Assert.Equal(keyword, token.Value);
+
+			Assert.Equal(keyword, string.Join("", tokens));
 		}
 
 		public static IEnumerable<object[]> GetKeywords()

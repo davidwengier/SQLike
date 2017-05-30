@@ -40,12 +40,12 @@ namespace StarNet.StarQL
 				}
 				else if (currentChar == ',')
 				{
-					tokens.Add(CreateToken<Comma>(reader));
+					tokens.Add(new Comma().Init(reader));
 					reader.Read();
 				}
 				else if (currentChar == '.')
 				{
-					tokens.Add(CreateToken<Period>(reader));
+					tokens.Add(new Period().Init(reader));
 					reader.Read();
 				}
 				else if (currentChar.Equals('['))
@@ -89,7 +89,7 @@ namespace StarNet.StarQL
 
 		private static Token GetIdentifierToken(StringReader reader, char currentChar)
 		{
-			Identifier token = CreateToken<Identifier>(reader);
+			Identifier token = new Identifier().Init(reader);
 			if (currentChar == '[')
 			{
 				token.Qualified = true;
@@ -105,7 +105,7 @@ namespace StarNet.StarQL
 
 		private static Token GetStringToken(StringReader reader, char currentChar)
 		{
-			StringLiteral token = CreateToken<StringLiteral>(reader);
+			StringLiteral token = new StringLiteral().Init(reader);
 			token.Delimeter = currentChar;
 			string currentCharAsString = currentChar.ToString();
 			string value = reader.ReadUntilMatching(currentCharAsString, currentCharAsString);
@@ -185,7 +185,8 @@ namespace StarNet.StarQL
 					{
 						Start = start,
 						End = reader.Position,
-						Value = dateValue
+						Value = value,
+						DateTime = dateValue
 					};
 				}
 				else
@@ -212,7 +213,8 @@ namespace StarNet.StarQL
 					{
 						Start = start,
 						End = reader.Position,
-						Value = decValue
+						Number = decValue,
+						Value = value
 					};
 				}
 				else
@@ -234,7 +236,8 @@ namespace StarNet.StarQL
 					{
 						Start = start,
 						End = reader.Position,
-						Value = intValue
+						Number = intValue,
+						Value = value
 					};
 				}
 				else
@@ -252,21 +255,18 @@ namespace StarNet.StarQL
 
 		private static Whitespace GetWhitespaceToken(StringReader reader, char currentChar)
 		{
-			Whitespace token = CreateToken<Whitespace>(reader);
+			Whitespace token = new Whitespace().Init(reader);
 			token.Character = currentChar;
 			reader.ReadUntilNot(currentChar.ToString());
 			token.End = reader.Position - 1;
 			return token;
 		}
 
-		private static T CreateToken<T>(StringReader reader) where T : Token, new()
+		private static T Init<T>(this T token, StringReader reader) where T : Token
 		{
-			T token = new T()
-			{
-				Start = reader.Position,
-				// Assume a single char token
-				End = reader.Position + 1
-			};
+			token.Start = reader.Position;
+			// Assume a single char token
+			token.End = reader.Position + 1;
 			return token;
 		}
 	}

@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="LexerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TokenComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\StarNet.StarQL.csproj">
@@ -58,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="LexerTests.Integration.cs" />
     <None Include="project.json" />
   </ItemGroup>
   <Choose>
