@@ -31,7 +31,7 @@ namespace StarNet.StarQL.Tests
 					new Whitespace(' '),
 					new Identifier("Entry")
 				}
-				};
+			};
 
 			yield return new object[] {
 				"select [EntryID] from Entry",
@@ -45,7 +45,7 @@ namespace StarNet.StarQL.Tests
 					new Whitespace(' '),
 					new Identifier("Entry")
 				}
-				};
+			};
 		}
 	}
 }
