@@ -3,7 +3,7 @@
     "Nerdbank.GitVersioning": "1.5.46"
   },
   "frameworks": {
-    "net45": {}
+    "net462": {}
   },
   "runtimes": {
     "win": {}
