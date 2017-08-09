@@ -10,7 +10,7 @@ namespace StarNet.StarQL.Tests
 	{
 		[Theory]
 		[MemberData("GetSelectStatements")]
-		public void SelectStatements(string input, IEnumerable<Token> expected)
+		public void SelectStatements(string input, List<Token> expected)
 		{
 			List<Token> actual = Lexer.Lex(input);
 
@@ -57,12 +57,12 @@ namespace StarNet.StarQL.Tests
 			Assert.Equal(input.ToLower(), roundTrip);
 		}
 
-		public static TheoryData<string, IEnumerable<Token>> GetSelectStatements()
+		public static SerializedTheoryData<string, List<Token>> GetSelectStatements()
 		{
-			return new TheoryData<string, IEnumerable<Token>> {
+			return new SerializedTheoryData<string, List<Token>> {
 				{
 					"SELECT EntryID FROM Entry",
-					new JsonSerializingList<Token>()
+					new List<Token>()
 					{
 						new Keyword("SELECT", KeywordKind.Select),
 						new Whitespace(' '),
@@ -75,7 +75,7 @@ namespace StarNet.StarQL.Tests
 				},
 				{
 					"select [EntryID] from Entry",
-					new JsonSerializingList<Token>()
+					new List<Token>()
 					{
 						new Keyword("select", KeywordKind.Select),
 						new Whitespace(' '),
