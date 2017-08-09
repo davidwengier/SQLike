@@ -6,17 +6,12 @@ namespace StarNet.StarQL.Tokens
 	/// <summary>
 	/// An identifier
 	/// </summary>
-	public class Identifier : Token
+	public class Identifier : ValueToken
 	{
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="Identifier"/> is qualified.
 		/// </summary>
-		public bool Qualified { get; internal set; }
-
-		/// <summary>
-		/// Gets the value.
-		/// </summary>
-		public string Value { get; internal set; }
+		public bool Qualified { get; set; }
 
 		internal Identifier()
 		{

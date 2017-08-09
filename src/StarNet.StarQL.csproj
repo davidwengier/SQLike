@@ -149,6 +149,7 @@
     <Compile Include="Tokens\KeywordKind.cs" />
     <Compile Include="Tokens\NumericLiteral.cs" />
     <Compile Include="Tokens\StringLiteral.cs" />
+    <Compile Include="Tokens\ValueToken.cs" />
     <Compile Include="Tokens\Token.cs" />
     <Compile Include="Tokens\Whitespace.cs" />
   </ItemGroup>

@@ -11,11 +11,11 @@ namespace StarNet.StarQL.Tokens
 		/// <summary>
 		/// The position of the start of the token
 		/// </summary>
-		public int Start { get; internal set; }
+		public int Start { get; set; }
 
 		/// <summary>
 		/// The end of the token
 		/// </summary>
-		public int End { get; internal set; }
+		public int End { get; set; }
 	}
 }

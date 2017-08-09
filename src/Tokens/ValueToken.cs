@@ -4,14 +4,14 @@ using System.Linq;
 namespace StarNet.StarQL.Tokens
 {
 	/// <summary>
-	/// A string literal
+	/// A token
 	/// </summary>
-	public class StringLiteral : ValueToken
+	public abstract class ValueToken : Token
 	{
 		/// <summary>
-		/// Gets the delimeter.
+		/// Gets the value.
 		/// </summary>
-		public char Delimeter { get; set; }
+		public string Value { get; set; }
 
 		/// <summary>
 		/// Returns a <see cref="System.String" /> that represents this instance.
@@ -21,10 +21,6 @@ namespace StarNet.StarQL.Tokens
 		/// </returns>
 		public override string ToString()
 		{
-			if (this.Delimeter > 0)
-			{
-				return this.Delimeter + this.Value + this.Delimeter;
-			}
 			return this.Value;
 		}
 	}

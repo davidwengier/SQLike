@@ -6,17 +6,12 @@ namespace StarNet.StarQL.Tokens
 	/// <summary>
 	/// An identifier
 	/// </summary>
-	public class Keyword : Token
+	public class Keyword : ValueToken
 	{
-		/// <summary>
-		/// Gets the value.
-		/// </summary>
-		public string Value { get; internal set; }
-
 		/// <summary>
 		/// Gets the kind.
 		/// </summary>
-		public KeywordKind Kind { get; internal set; }
+		public KeywordKind Kind { get; set; }
 
 		internal Keyword()
 		{
@@ -31,17 +26,6 @@ namespace StarNet.StarQL.Tokens
 		{
 			this.Value = value;
 			this.Kind = kind;
-		}
-
-		/// <summary>
-		/// Returns a <see cref="System.String" /> that represents this instance.
-		/// </summary>
-		/// <returns>
-		/// A <see cref="System.String" /> that represents this instance.
-		/// </returns>
-		public override string ToString()
-		{
-			return this.Value;
 		}
 	}
 }

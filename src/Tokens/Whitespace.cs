@@ -11,7 +11,7 @@ namespace StarNet.StarQL.Tokens
 		/// <summary>
 		/// Which whitespace character this is
 		/// </summary>
-		public char Character { get; internal set; }
+		public char Character { get; set; }
 
 		internal Whitespace()
 		{
