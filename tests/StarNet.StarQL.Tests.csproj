@@ -49,9 +49,6 @@
   <ItemGroup>
     <Compile Include="LexerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerializedList.cs" />
-    <Compile Include="SerializedWrapper.cs" />
-    <Compile Include="SerializedTheoryData.cs" />
     <Compile Include="TokenComparer.cs" />
   </ItemGroup>
   <ItemGroup>
