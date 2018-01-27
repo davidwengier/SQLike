@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StarNet.StarQL.Nodes;
-using StarNet.StarQL.Tokens;
+using SQLike.Nodes;
+using SQLike.Tokens;
 
-namespace StarNet.StarQL
+namespace SQLike
 {
 	/// <summary>
 	/// Parses a StarQL statement from a list of tokens that come from the Lexer

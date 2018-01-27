@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StarNet.StarQL.Tokens;
+using SQLike.Tokens;
 using Xunit;
 
-namespace StarNet.StarQL.Tests
+namespace SQLike.Tests
 {
 	public class LexerTests_Integration
 	{

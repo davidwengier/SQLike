@@ -1,4 +1,4 @@
-﻿namespace StarNet.StarQL.Nodes
+﻿namespace SQLike.Nodes
 {
 	/// <summary>
 	/// A table

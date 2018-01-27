@@ -1,9 +1,9 @@
-﻿namespace StarNet.StarQL.Nodes
+﻿namespace SQLike.Nodes
 {
 	/// <summary>
 	/// A table
 	/// </summary>
-	/// <seealso cref="StarNet.StarQL.Nodes.ITable" />
+	/// <seealso cref="SQLike.Nodes.ITable" />
 	public class Table : ITable
 	{
 		private string m_value;

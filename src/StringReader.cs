@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace StarNet.StarQL
+namespace SQLike
 {
 	[DebuggerDisplay("{DebuggerDisplay}")]
 	internal class StringReader

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using StarNet.StarQL.Tokens;
+using SQLike.Tokens;
 
-namespace StarNet.StarQL.Tests
+namespace SQLike.Tests
 {
 	public partial class TokenComparer : IEqualityComparer<Token>
 	{

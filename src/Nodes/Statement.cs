@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using StarNet.StarQL.Tokens;
+using SQLike.Tokens;
 
-namespace StarNet.StarQL.Nodes
+namespace SQLike.Nodes
 {
 	/// <summary>
 	/// A statement
 	/// </summary>
-	/// <seealso cref="StarNet.StarQL.Nodes.ITable" />
+	/// <seealso cref="SQLike.Nodes.ITable" />
 	public class Statement : ITable
 	{
 		/// <summary>

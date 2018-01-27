@@ -1,9 +1,5 @@
  param (
-	[string]$ReferencesPath = $null,
 	[string]$ApiKey = $null,
-	[string]$NugetServer = "https://nuget.starrez.com",
-	[string]$CodeSigningCertificate = $null,
-	[string]$CodeSigningCertificatePassword = $null,
 	[string]$PublishBranchToNuget = $null,
 	[string]$BranchName = $null
  )
@@ -43,14 +39,6 @@ Invoke-Expression "&`"$NugetPath`" install xunit.runner.console -Source https://
 $XUnitExe = Get-ChildItem -Path $ToolPath -Recurse -Filter "xunit.console.exe" | Sort-Object -Property "FullName" -Descending | Select-Object -Property "FullName" -First 1 | foreach {$_.FullName}
 Write-Host "Xunit console runner is in $XUnitExe"
 
-if ($CodeSigningCertificate) {
-	## Install/Update Code Signer
-	Write-Host "Getting CodeSigner"
-	Invoke-Expression "&`"$NugetPath`" install CodeSigner -Source $NugetServer/nuget -OutputDirectory `"$ToolPath`""
-	## find the most recent version of code Signer
-	$codeSigner = (Get-ChildItem -Path $ToolPath -Recurse -Filter "CodeSigner.exe" | Sort-Object -Property "FullName" -Descending | Select-Object -Property "FullName" -First 1).FullName
-}
-
 ## Call git version to get the version
 $vers = (Invoke-Expression -Command $versionPs1).FullName
 Write-Host "Got version info:"
@@ -72,7 +60,7 @@ $MajorMinorVersion = $vers.MajorMinorVersion.ToString()
 Write-Host "Building $SolutionName"
 
 Write-Host "Running nuget restore"
-Invoke-Expression "&`"$NugetPath`" restore $SolutionName.sln  -Source $NugetServer/nuget -Source https://api.nuget.org/v3/index.json"
+Invoke-Expression "&`"$NugetPath`" restore $SolutionName.sln"
 
 $MSBuildArguments = "$SolutionName.sln /p:Optimize=true /p:Configuration=Release /p:DebugSymbols=true /p:DebugType=full /tv:$MSBuildToolsVersion"
 Write-Host "Running msbuild: $MSBuildArguments"
@@ -94,11 +82,6 @@ if (Test-Path "$PSScriptRoot\tests") {
 	}
 }
 
-if ($CodeSigningCertificate) {
-	Write-Host "Signing your code with $CodeSigningCertificate"
-	Invoke-Expression "&`"$codeSigner`" /wp=$PSScriptRoot\src\bin\Release /fn=$SolutionName.dll /cp=$CodeSigningCertificate /p=$CodeSigningCertificatePassword"
-}
-
 # Only do nuget on master, when we have an api key, or when we're explicitly told to
 if ($PublishBranchToNuget -eq "true" -or $BranchName -eq "master") {
 	Write-Host "Nugety goodness"
@@ -115,25 +98,7 @@ if ($PublishBranchToNuget -eq "true" -or $BranchName -eq "master") {
 	Invoke-Expression "&`"$NugetPath`" pack $SolutionName.nuspec -Version $version $NugetSuffix"
 
 	if ($ApiKey) {
-		Write-Host "Running nuget push to $NugetServer"
-		Invoke-Expression "&`"$NugetPath`" push *.nupkg -ApiKey $ApiKey -Source $NugetServer/"
+		Write-Host "Running nuget push"
+		Invoke-Expression "&`"$NugetPath`" push *.nupkg -ApiKey $ApiKey/"
 	}
-}
-
-#only copy to internal references if we're on master
-if ($ReferencesPath -and $BranchName -eq "master") {
-	Write-Host "Publishing to internal references for NANT"
-	$DeploymentFolder = "$ReferencesPath\$SolutionName\$MajorMinorVersion"
-	if (Test-Path $DeploymentFolder) {
-		Write-Host "Removing old files from $DeploymentFolder"
-		Remove-Item $DeploymentFolder -Recurse -Force
-	}
-	Write-Host "Creating $DeploymentFolder"
-	New-Item $DeploymentFolder -Force -ItemType Directory
-
-	Write-Host "Deploying $PSScriptRoot\src\bin\Release\* for internal use to $DeploymentFolder"
-	Get-ChildItem -Path "$PSScriptRoot\src\bin\Release" -Filter "$SolutionName.dll" | Copy-Item -Destination $DeploymentFolder -Force
-	Get-ChildItem -Path "$PSScriptRoot\src\bin\Release" -Filter "$SolutionName.exe" | Copy-Item -Destination $DeploymentFolder -Force
-	Get-ChildItem -Path "$PSScriptRoot\src\bin\Release" -Filter "$SolutionName.pdb" | Copy-Item -Destination $DeploymentFolder -Force
-	Get-ChildItem -Path "$PSScriptRoot\src\bin\Release" -Filter "$SolutionName.xml" | Copy-Item -Destination $DeploymentFolder -Force
 }

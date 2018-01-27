@@ -3,9 +3,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using StarNet.StarQL.Tokens;
+using SQLike.Tokens;
 
-namespace StarNet.StarQL
+namespace SQLike
 {
 	/// <summary>
 	/// Converts strings to tokens

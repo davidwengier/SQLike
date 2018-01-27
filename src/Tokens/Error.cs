@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 
-namespace StarNet.StarQL.Tokens
+namespace SQLike.Tokens
 {
 	/// <summary>
 	/// An error token
 	/// </summary>
-	/// <seealso cref="StarNet.StarQL.Tokens.Token" />
+	/// <seealso cref="SQLike.Tokens.Token" />
 	public class Error : ValueToken
 	{
 		/// <summary>

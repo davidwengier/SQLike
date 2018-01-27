@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+	<metadata>
+		<id>SQLike</id>
+		<version>1.0.0</version>
+		<authors>David Wengier</authors>
+		<owners>David Wengier</owners>
+		<licenseUrl>http://www.wengier.com</licenseUrl>
+		<projectUrl>http://www.wengier.com</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>SQLike</description>
+		<releaseNotes>SQLike</releaseNotes>
+		<copyright>Copyright 2017</copyright>
+	</metadata>
+	<files>
+		<file src="src\bin\Release\SQLike.dll" target="lib\net45" />
+		<file src="src\bin\Release\SQLike.pdb" target="lib\net45" />
+		<file src="src\bin\Release\SQLike.xml" target="lib\net45" />
+	</files>
+</package>

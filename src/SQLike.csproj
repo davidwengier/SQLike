@@ -8,8 +8,8 @@
     <ProjectGuid>{8405E75E-03E9-4013-8350-112AD230A70F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StarNet.StarQL</RootNamespace>
-    <AssemblyName>StarNet.StarQL</AssemblyName>
+    <RootNamespace>SQLike</RootNamespace>
+    <AssemblyName>SQLike</AssemblyName>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -19,7 +19,6 @@
     <SccProvider>
     </SccProvider>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>starnet.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -55,8 +54,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DocumentationFile>bin\Debug\StarNet.StarQL.xml</DocumentationFile>
-    <CodeAnalysisRuleSet>..\..\..\References\Templates\StarRez.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\SQLike.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
@@ -95,7 +93,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>bin\Release\StarNet.StarQL.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\SQLike.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>
     </NoWarn>
@@ -104,13 +102,12 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>CODE_ANALYSIS;TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
-    <DocumentationFile>bin\x86\Debug\StarNet.StarQL.xml</DocumentationFile>
+    <DocumentationFile>bin\x86\Debug\SQLike.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>..\..\build\StarRez.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -155,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
-    <None Include="starnet.snk" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

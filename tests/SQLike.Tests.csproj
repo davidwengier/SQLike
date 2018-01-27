@@ -6,8 +6,8 @@
     <ProjectGuid>{892BB306-E8A4-45DE-B7D5-1B1A243E7BDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StarNet.StarQL.Tests</RootNamespace>
-    <AssemblyName>StarNet.StarQL.Tests</AssemblyName>
+    <RootNamespace>SQLike.Tests</RootNamespace>
+    <AssemblyName>SQLike.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -52,9 +52,9 @@
     <Compile Include="TokenComparer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\StarNet.StarQL.csproj">
+    <ProjectReference Include="..\src\SQLike.csproj">
       <Project>{8405e75e-03e9-4013-8350-112ad230a70f}</Project>
-      <Name>StarNet.StarQL</Name>
+      <Name>SQLike</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

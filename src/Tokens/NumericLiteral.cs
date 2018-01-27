@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace StarNet.StarQL.Tokens
+namespace SQLike.Tokens
 {
 	/// <summary>
 	/// A numeric literal

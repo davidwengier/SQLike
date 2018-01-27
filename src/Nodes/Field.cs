@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace StarNet.StarQL.Nodes
+namespace SQLike.Nodes
 {
 	/// <summary>
 	/// A field
