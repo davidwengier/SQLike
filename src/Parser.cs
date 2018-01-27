@@ -7,7 +7,7 @@ using SQLike.Tokens;
 namespace SQLike
 {
 	/// <summary>
-	/// Parses a StarQL statement from a list of tokens that come from the Lexer
+	/// Parses a statement from a list of tokens that come from the Lexer
 	/// </summary>
 	public class Parser
 	{

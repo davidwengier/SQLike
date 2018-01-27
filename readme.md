@@ -1,3 +1,3 @@
 # SQLike
 
-The StarQL language lexer, parser and basis for translators and executors.
+The SQL-like language lexer, parser and basis for translators and executors.
