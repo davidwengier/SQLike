@@ -9,7 +9,7 @@ namespace SQLike.Tests
 	public class LexerTests_Integration
 	{
 		[Theory]
-		[MemberData("GetSelectStatements")]
+		[MemberData(nameof(GetSelectStatements))]
 		public void SelectStatements(string input, List<Token> expected)
 		{
 			List<Token> actual = Lexer.Lex(input);
@@ -18,7 +18,7 @@ namespace SQLike.Tests
 		}
 
 		[Theory]
-		[MemberData("GetSelectStatements")]
+		[MemberData(nameof(GetSelectStatements))]
 		public void SelectStatements_RoundTrip(string input, List<Token> expected)
 		{
 			List<Token> actual = Lexer.Lex(input);
@@ -28,7 +28,7 @@ namespace SQLike.Tests
 		}
 
 		[Theory]
-		[MemberData("GetSelectStatements")]
+		[MemberData(nameof(GetSelectStatements))]
 		public void SelectStatements_ToUpper(string input, List<Token> expected)
 		{
 			List<Token> actual = Lexer.Lex(input);
@@ -43,7 +43,7 @@ namespace SQLike.Tests
 		}
 
 		[Theory]
-		[MemberData("GetSelectStatements")]
+		[MemberData(nameof(GetSelectStatements))]
 		public void SelectStatements_ToLower(string input, List<Token> expected)
 		{
 			List<Token> actual = Lexer.Lex(input);
