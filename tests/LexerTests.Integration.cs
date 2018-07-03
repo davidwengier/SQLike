@@ -6,87 +6,106 @@ using Xunit;
 
 namespace SQLike.Tests
 {
-	public class LexerTests_Integration
-	{
-		[Theory]
-		[MemberData(nameof(GetSelectStatements))]
-		public void SelectStatements(string input, List<Token> expected)
-		{
-			List<Token> actual = Lexer.Lex(input);
+    public class LexerTests_Integration
+    {
+        [Theory]
+        [MemberData(nameof(GetSelectStatements))]
+        public void SelectStatements(string input, List<Token> expected)
+        {
+            List<Token> actual = Lexer.Lex(input);
 
-			Assert.Equal(expected, actual, new TokenComparer());
-		}
+            Assert.Equal(expected, actual, new TokenComparer());
+        }
 
-		[Theory]
-		[MemberData(nameof(GetSelectStatements))]
-		public void SelectStatements_RoundTrip(string input, List<Token> expected)
-		{
-			List<Token> actual = Lexer.Lex(input);
+        [Theory]
+        [MemberData(nameof(GetSelectStatements))]
+        public void SelectStatements_RoundTrip(string input, List<Token> expected)
+        {
+            if (expected == null) throw new ArgumentNullException(nameof(expected));
 
-			string roundTrip = string.Join("", actual);
-			Assert.Equal(input, roundTrip);
-		}
+            List<Token> actual = Lexer.Lex(input);
 
-		[Theory]
-		[MemberData(nameof(GetSelectStatements))]
-		public void SelectStatements_ToUpper(string input, List<Token> expected)
-		{
-			List<Token> actual = Lexer.Lex(input);
+            string roundTrip = string.Join("", actual);
+            Assert.Equal(input, roundTrip);
+        }
 
-			foreach (ValueToken token in actual.OfType<ValueToken>())
-			{
-				token.Value = token.Value.ToUpper();
-			}
+        [Theory]
+        [MemberData(nameof(GetSelectStatements))]
+        public void SelectStatements_ToUpper(string input, List<Token> expected)
+        {
+            if (expected == null) throw new ArgumentNullException(nameof(expected));
 
-			string roundTrip = string.Join("", actual);
-			Assert.Equal(input.ToUpper(), roundTrip);
-		}
+            List<Token> actual = Lexer.Lex(input);
 
-		[Theory]
-		[MemberData(nameof(GetSelectStatements))]
-		public void SelectStatements_ToLower(string input, List<Token> expected)
-		{
-			List<Token> actual = Lexer.Lex(input);
+            foreach (ValueToken token in actual.OfType<ValueToken>())
+            {
+                token.Value = token.Value.ToUpper();
+            }
 
-			foreach (ValueToken token in actual.OfType<ValueToken>())
-			{
-				token.Value = token.Value.ToLower();
-			}
+            string roundTrip = string.Join("", actual);
+            Assert.Equal(input.ToUpper(), roundTrip);
+        }
 
-			string roundTrip = string.Join("", actual);
-			Assert.Equal(input.ToLower(), roundTrip);
-		}
+        [Theory]
+        [MemberData(nameof(GetSelectStatements))]
+        public void SelectStatements_ToLower(string input, List<Token> expected)
+        {
+            if (expected == null) throw new ArgumentNullException(nameof(expected));
 
-		public static SerializedTheoryData<string, List<Token>> GetSelectStatements()
-		{
-			return new SerializedTheoryData<string, List<Token>> {
-				{
-					"SELECT EntryID FROM Entry",
-					new List<Token>()
-					{
-						new Keyword("SELECT", KeywordKind.Select),
-						new Whitespace(' '),
-						new Identifier("EntryID"),
-						new Whitespace(' '),
-						new Keyword("FROM", KeywordKind.From),
-						new Whitespace(' '),
-						new Identifier("Entry")
-					}
-				},
-				{
-					"select [EntryID] from Entry",
-					new List<Token>()
-					{
-						new Keyword("select", KeywordKind.Select),
-						new Whitespace(' '),
-						new Identifier("EntryID", true),
-						new Whitespace(' '),
-						new Keyword("from", KeywordKind.From),
-						new Whitespace(' '),
-						new Identifier("Entry")
-					}
-				}
-			};
-		}
-	}
+            List<Token> actual = Lexer.Lex(input);
+
+            foreach (ValueToken token in actual.OfType<ValueToken>())
+            {
+                token.Value = token.Value.ToLower();
+            }
+
+            string roundTrip = string.Join("", actual);
+            Assert.Equal(input.ToLower(), roundTrip);
+        }
+
+        public static SerializedTheoryData<string, List<Token>> GetSelectStatements()
+        {
+            return new SerializedTheoryData<string, List<Token>> {
+                {
+                    "SELECT EntryID FROM Entry",
+                    new List<Token>()
+                    {
+                        new Keyword("SELECT", KeywordKind.Select),
+                        new Whitespace(' '),
+                        new Identifier("EntryID"),
+                        new Whitespace(' '),
+                        new Keyword("FROM", KeywordKind.From),
+                        new Whitespace(' '),
+                        new Identifier("Entry")
+                    }
+                },
+                {
+                    "select [EntryID] from Entry",
+                    new List<Token>()
+                    {
+                        new Keyword("select", KeywordKind.Select),
+                        new Whitespace(' '),
+                        new Identifier("EntryID", true),
+                        new Whitespace(' '),
+                        new Keyword("from", KeywordKind.From),
+                        new Whitespace(' '),
+                        new Identifier("Entry")
+                    }
+                },
+                {
+                    "select [EntryID] from [Entry]",
+                    new List<Token>()
+                    {
+                        new Keyword("select", KeywordKind.Select),
+                        new Whitespace(' '),
+                        new Identifier("EntryID", true),
+                        new Whitespace(' '),
+                        new Keyword("from", KeywordKind.From),
+                        new Whitespace(' '),
+                        new Identifier("Entry", true)
+                    }
+                }
+            };
+        }
+    }
 }

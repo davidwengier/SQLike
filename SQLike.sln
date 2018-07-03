@@ -4,10 +4,11 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLike", "src\SQLike.csproj", "{8405E75E-03E9-4013-8350-112AD230A70F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLike.Tests", "tests\SQLike.Tests.csproj", "{892BB306-E8A4-45DE-B7D5-1B1A243E7BDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLike.Tests", "tests\SQLike.Tests.csproj", "{892BB306-E8A4-45DE-B7D5-1B1A243E7BDE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9465D0E-4A62-429D-A3AE-9FA20DA948E6}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		build.ps1 = build.ps1
 		readme.md = readme.md
 		SQLike.nuspec = SQLike.nuspec

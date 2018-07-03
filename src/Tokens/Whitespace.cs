@@ -1,37 +1,36 @@
 ﻿using System;
-using System.Linq;
 
 namespace SQLike.Tokens
 {
-	/// <summary>
-	/// Whitespace
-	/// </summary>
-	public class Whitespace : Token
-	{
-		/// <summary>
-		/// Which whitespace character this is
-		/// </summary>
-		public char Character { get; set; }
+    /// <summary>
+    /// Whitespace
+    /// </summary>
+    public class Whitespace : Token
+    {
+        /// <summary>
+        /// Which whitespace character this is
+        /// </summary>
+        public char Character { get; set; }
 
-		internal Whitespace()
-		{
-		}
+        internal Whitespace()
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Whitespace"/> class.
-		/// </summary>
-		/// <param name="character">The character.</param>
-		public Whitespace(char character)
-		{
-			this.Character = character;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Whitespace"/> class.
+        /// </summary>
+        /// <param name="character">The character.</param>
+        public Whitespace(char character)
+        {
+            this.Character = character;
+        }
 
-		/// <summary>
-		/// Returns a <see cref="System.String" /> that represents this instance.
-		/// </summary>
-		public override string ToString()
-		{
-			return new string(this.Character, this.End - this.Start + 1);
-		}
-	}
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        public override string ToString()
+        {
+            return new string(this.Character, this.End - this.Start + 1);
+        }
+    }
 }

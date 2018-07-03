@@ -1,9 +1,9 @@
 ﻿namespace SQLike.Nodes
 {
-	/// <summary>
-	/// A table
-	/// </summary>
-	public interface ITable
-	{
-	}
+    /// <summary>
+    /// A table
+    /// </summary>
+    public interface ITable
+    {
+    }
 }
