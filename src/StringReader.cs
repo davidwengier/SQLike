@@ -100,7 +100,7 @@ namespace SQLike
             StringBuilder sb = new StringBuilder();
             for (int i = _position; i < _length; i++)
             {
-                if (char.IsWhiteSpace(_query, i))
+                if (IsWordBreak(_query[i]))
                 {
                     break;
                 }
@@ -110,6 +110,16 @@ namespace SQLike
                 }
             }
             return sb.ToString();
+        }
+
+        private static bool IsWordBreak(char character)
+        {
+            return char.IsWhiteSpace(character) || character == '[';
+        }
+
+        internal string ReadWord()
+        {
+            return ReadUntil(IsWordBreak);
         }
 
         internal bool AtEnd

@@ -104,6 +104,31 @@ namespace SQLike.Tests
                         new Whitespace(' '),
                         new Identifier("Entry", true)
                     }
+                },
+                {
+                    "select[EntryID]from[Entry]",
+                    new List<Token>()
+                    {
+                        new Keyword("select", KeywordKind.Select),
+                        new Identifier("EntryID", true),
+                        new Keyword("from", KeywordKind.From),
+                        new Identifier("Entry", true)
+                    }
+                },
+                {
+                    "select\n    EntryID\nfrom\n    Entry",
+                    new List<Token>()
+                    {
+                        new Keyword("select", KeywordKind.Select),
+                        new Whitespace('\n'),
+                        new Whitespace(' ') { End = 3 },
+                        new Identifier("EntryID"),
+                        new Whitespace('\n'),
+                        new Keyword("from", KeywordKind.From),
+                        new Whitespace('\n'),
+                        new Whitespace(' ') { End = 3 },
+                        new Identifier("Entry")
+                    }
                 }
             };
         }

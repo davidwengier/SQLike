@@ -77,7 +77,7 @@ namespace SQLike
                     return new Keyword
                     {
                         Start = reader.Position,
-                        Value = reader.ReadUntil(char.IsWhiteSpace),
+                        Value = reader.ReadWord(),
                         End = reader.Position,
                         Kind = kind
                     };
