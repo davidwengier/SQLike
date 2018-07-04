@@ -67,67 +67,93 @@ namespace SQLike.Tests
         {
             return new SerializedTheoryData<string, List<Token>> {
                 {
-                    "SELECT EntryID FROM Entry",
+                    "SELECT TableOfDataID FROM TableOfData",
                     new List<Token>()
                     {
                         new Keyword("SELECT", KeywordKind.Select),
                         new Whitespace(' '),
-                        new Identifier("EntryID"),
+                        new Identifier("TableOfDataID"),
                         new Whitespace(' '),
                         new Keyword("FROM", KeywordKind.From),
                         new Whitespace(' '),
-                        new Identifier("Entry")
+                        new Identifier("TableOfData")
                     }
                 },
                 {
-                    "select [EntryID] from Entry",
+                    "select [TableOfDataID] from TableOfData",
                     new List<Token>()
                     {
                         new Keyword("select", KeywordKind.Select),
                         new Whitespace(' '),
-                        new Identifier("EntryID", true),
+                        new Identifier("TableOfDataID", true),
                         new Whitespace(' '),
                         new Keyword("from", KeywordKind.From),
                         new Whitespace(' '),
-                        new Identifier("Entry")
+                        new Identifier("TableOfData")
                     }
                 },
                 {
-                    "select [EntryID] from [Entry]",
+                    "select [TableOfDataID] from [TableOfData]",
                     new List<Token>()
                     {
                         new Keyword("select", KeywordKind.Select),
                         new Whitespace(' '),
-                        new Identifier("EntryID", true),
+                        new Identifier("TableOfDataID", true),
                         new Whitespace(' '),
                         new Keyword("from", KeywordKind.From),
                         new Whitespace(' '),
-                        new Identifier("Entry", true)
+                        new Identifier("TableOfData", true)
                     }
                 },
                 {
-                    "select[EntryID]from[Entry]",
+                    "select[TableOfDataID]from[TableOfData]",
                     new List<Token>()
                     {
                         new Keyword("select", KeywordKind.Select),
-                        new Identifier("EntryID", true),
+                        new Identifier("TableOfDataID", true),
                         new Keyword("from", KeywordKind.From),
-                        new Identifier("Entry", true)
+                        new Identifier("TableOfData", true)
                     }
                 },
                 {
-                    "select\n    EntryID\nfrom\n    Entry",
+                    "select\n    TableOfDataID\nfrom\n    TableOfData",
                     new List<Token>()
                     {
                         new Keyword("select", KeywordKind.Select),
                         new Whitespace('\n'),
                         new Whitespace(' ') { End = 3 },
-                        new Identifier("EntryID"),
+                        new Identifier("TableOfDataID"),
                         new Whitespace('\n'),
                         new Keyword("from", KeywordKind.From),
                         new Whitespace('\n'),
                         new Whitespace(' ') { End = 3 },
-                        new Identifier("Entry")
+                        new Identifier("TableOfData")
+                    }
+                },
+                {
+                    "select\nTableOfDataID\nfrom\nTableOfData",
+                    new List<Token>()
+                    {
+                        new Keyword("select", KeywordKind.Select),
+                        new Whitespace('\n'),
+                        new Identifier("TableOfDataID"),
+                        new Whitespace('\n'),
+                        new Keyword("from", KeywordKind.From),
+                        new Whitespace('\n'),
+                        new Identifier("TableOfData")
+                    }
+                },
+                {
+                    "SELECT SELECT FROM FROM",
+                    new List<Token>()
+                    {
+                        new Keyword("SELECT", KeywordKind.Select),
+                        new Whitespace(' '),
+                        new Keyword("SELECT", KeywordKind.Select),
+                        new Whitespace(' '),
+                        new Keyword("FROM", KeywordKind.From),
+                        new Whitespace(' '),
+                        new Keyword("FROM", KeywordKind.From)
                     }
                 }
             };
